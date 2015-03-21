@@ -122,8 +122,6 @@ class Config{
 				}else{
 					$this->correct = false;
 				}
-				$logger = Server::getInstance()->getLogger();
-				$logger->warning("Loading file " . $this->file . " as type " . $this->type);
 			}
 			if($this->correct === true){
 				$content = file_get_contents($this->file);
@@ -175,20 +173,6 @@ class Config{
 	 * @return boolean
 	 */
 	public function save(){
-		$this->correct = true;
-		$this->type = Config::DETECT;
-	
-		if($this->type === Config::DETECT){
-			$extension = explode(".", basename($this->file));
-			$extension = strtolower(trim(array_pop($extension)));
-			if(isset(Config::$formats[$extension])){
-				$this->type = Config::$formats[$extension];
-			}else{
-				$this->correct = false;
-			}
-			$logger = Server::getInstance()->getLogger();
-			$logger->warning("Saving file " . $this->file . " as type " . $this->type);
-		}
 		if($this->correct === true){
 			try{
 				$content = null;
