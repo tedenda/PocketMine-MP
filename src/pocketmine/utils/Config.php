@@ -122,6 +122,8 @@ class Config{
 				}else{
 					$this->correct = false;
 				}
+				$logger = Server::getInstance()->getLogger();
+				$logger->warning("Loading file " . $this->file . " as type " . $this->type);
 			}
 			if($this->correct === true){
 				$content = file_get_contents($this->file);
@@ -142,7 +144,6 @@ class Config{
 						break;
 					case Config::ENUM:
 						$this->parseList($content);
-						$this->printConfigArray();
 						break;
 					default:
 						$this->correct = false;
@@ -185,6 +186,8 @@ class Config{
 			}else{
 				$this->correct = false;
 			}
+			$logger = Server::getInstance()->getLogger();
+			$logger->warning("Saving file " . $this->file . " as type " . $this->type);
 		}
 		if($this->correct === true){
 			try{
@@ -488,20 +491,6 @@ class Config{
 				}
 				$this->config[$k] = $v;
 			}
-		}
-	}
-
-	/**
-	 * @param config
-	 */
-	private function printConfigArray(){
-		$logger = Server::getInstance()->getLogger();
-		if(!is_array($this->config)){
-			$logger->critical("printConfigArray: Not array, breaks");
-			break;
-		}
-		foreach($this->config as $k => $v){
-			$logger->critical("printConfigArray part: " . $v . ":" . $k);
 		}
 	}
 
